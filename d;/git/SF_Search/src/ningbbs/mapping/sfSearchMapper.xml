@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的
+ 例如namespace="me.gacl.mapping.userMapper"就是me.gacl.mapping(包名)+userMapper(userMapper.xml文件去除后缀)
+  -->
+ <mapper namespace="ningbbs.mapping.sfSearchMapper">
+     <!-- 在select标签中编写查询的SQL语句， 设置select标签的id属性为getUser，id属性值必须是唯一的，不能够重复
+     使用parameterType属性指明查询时使用的参数类型，resultType属性指明查询返回的结果集类型
+     resultType="me.gacl.domain.User"就表示将查询结果封装成一个User类的对象返回
+     User类就是users表所对应的实体类
+     -->
+     <select id="getSfSearch" parameterType="string"
+        resultType="ningbbs.kd.SfSearch">
+        select * from kd where id = #{id}
+     </select>
+     <select id="getKdnum" parameterType="string"
+        resultType="string">
+        select kdNum from kdnums WHERE addTime > #{addTime} and kdType = '顺丰速运'
+     </select>
+     <select id="getWdIds" parameterType="string"
+        resultType="string">
+        select ids from sf_wd where info = #{info}
+     </select>
+     <insert id="addOlder" parameterType="java.util.Map"> 
+        insert into kd(id,productName,productCode,recipientTime,scanDateTime,origin,originIds,destination,destinationIds,limitTypeName,limitTypeCode,addtime,routes) values(#{id},#{productName},#{productCode},#{recipientTime},#{recipientTime},#{origin},#{originIds},#{destination},#{destinationIds},#{limitTypeName},#{limitTypeCode},#{addtime},#{routes})
+    </insert>
+    <insert id="addWdInfo" parameterType="string"> 
+        insert into sf_wd(info) values(#{info})
+    </insert>
+    <delete id="delSf" parameterType="string">
+   		DELETE FROM kd WHERE id = #{id}
+    </delete>
+    <update id="addShi" parameterType="java.util.Map">
+        update sf_wd set shi=#{shi} where info=#{info}
+    </update>
+       <update id="addQu" parameterType="java.util.Map">
+        update sf_wd set qu=#{qu} where info=#{info}
+    </update>
+        <update id="addSheng" parameterType="java.util.Map">
+        update sf_wd set sheng=#{sheng} where info=#{info}
+    </update> 
+    <update id="updataIds" parameterType="java.util.Map">
+        update sf_wd set ids=#{ids} where info=#{info}
+    </update> 
+    <select id="search_sf_wd" resultType="string">
+        <![CDATA[SELECT info FROM sf_wd WHERE info like '%【%' and ifnull(rid,0)<>1]]>
+    </select> 
+ </mapper>
